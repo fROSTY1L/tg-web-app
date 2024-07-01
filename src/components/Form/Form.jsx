@@ -9,22 +9,20 @@ const Form = () => {
     const {tg} = useTelegram()
 
     const onSendData = useCallback(() => {
-    
         const data = {
             country,
             street,
             subject
         }
-        tg.sendData(JSON.stringify(data))
-    }, [])
-        
-        useEffect(() => {
-            tg.WebApp.onEvent('mainButtonClicked', onSendData)
-            return () => {
-                tg.WebApp.offEvent('mainButtonClicked', onSendData)
-            }
-        }, [])
-   
+        tg.sendData(JSON.stringify(data));
+    }, [country, street, subject])
+
+    useEffect(() => {
+        tg.onEvent('mainButtonClicked', onSendData)
+        return () => {
+            tg.offEvent('mainButtonClicked', onSendData)
+        }
+    }, [onSendData])
 
     useEffect(() => {
         tg.MainButton.setParams({
